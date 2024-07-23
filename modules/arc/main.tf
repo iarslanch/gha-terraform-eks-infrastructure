@@ -1,6 +1,7 @@
 resource "helm_release" "arc" {
   name       = "actions-runner-controller"
   repository = "https://actions-runner-controller.github.io/actions-runner-controller"
+  chart      = "actions-runner-controller"
   namespace  = "actions-runner-system"
 
   set {
