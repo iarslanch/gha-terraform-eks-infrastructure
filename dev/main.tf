@@ -93,8 +93,9 @@ module "eks-cluster" {
 module "arc" {
   source       = "../modules/arc"
   github_token = var.github_token
-  repository   = "iarslanch/techsol-ci-gha-workflow"
+  repository   = var.repository
 }
+
 
 
 
