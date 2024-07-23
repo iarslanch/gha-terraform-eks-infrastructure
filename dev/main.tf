@@ -90,16 +90,6 @@ module "eks-cluster" {
    cidrs     =  ["0.0.0.0/0", "0.0.0.0/0", "0.0.0.0/0", "10.0.0.200/32"]
 }
 
-module "arc" {
-  source       = "../modules/arc"
-  github_token = var.github_token
-  repository   = var.repository
-
-  kubernetes_host           = var.kubernetes_host
-  kubernetes_token          = var.kubernetes_token
-  kubernetes_ca_certificate = var.kubernetes_ca_certificate
-}
-
 
 
 
