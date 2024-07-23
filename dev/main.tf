@@ -84,6 +84,7 @@ module "eks-cluster" {
    max_size     = 1
    min_size     = 1
 
+
 # EKS Cluster Security Group Configuration
    tcp_ports =  "22,80,443"
    cidrs     =  ["0.0.0.0/0", "0.0.0.0/0", "0.0.0.0/0", "10.0.0.200/32"]
