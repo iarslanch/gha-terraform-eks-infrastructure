@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket  = "state-file-terraform-demo"
+    bucket  = "gha-state-file-terraform"
     key     = "dev/terraform.tfstate"
-    region  = "us-east-1"
+    region  = "eu-west-2"
     profile = "terraform"
   }
 }

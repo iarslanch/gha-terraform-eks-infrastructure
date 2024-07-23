@@ -42,8 +42,8 @@ source                          = "../modules/network"
   db_private_subnet02_map_public_ip_on_launch           = false
     
  # Subnets Availability Configuration
-  availability_zone1                        =     "us-east-1a"                                  
-  availability_zone2                        =     "us-east-1b"                                  
+  availability_zone1                        =     "eu-west-2a"                                  
+  availability_zone2                        =     "eu-west-2b"                                  
   project                                   =     var.project                              
   env                                       =     var.env      
 
@@ -73,19 +73,19 @@ module "eks-cluster" {
    project                 = var.project
    env                     = var.env
 # EKS Cluster Nodes Configuration
-   eks_cluster_node_keypair_name = "terraform-eks"
+   eks_cluster_node_keypair_name = "techsoland"
    ami_type                      = "AL2_x86_64"
    instance_types                = ["t2.medium"]
    capacity_type                 = "ON_DEMAND"
-   disk_size                     = 20
+   disk_size                     = 30
  
 # EKS Cluster Nodes AutoScaling Configuration
-   desired_size = 2
-   max_size     = 3
-   min_size     = 2
+   desired_size = 1
+   max_size     = 1
+   min_size     = 1
 
 # EKS Cluster Security Group Configuration
-   tcp_ports =  "22,80,443,3306"
+   tcp_ports =  "22,80,443"
    cidrs     =  ["0.0.0.0/0", "0.0.0.0/0", "0.0.0.0/0", "10.0.0.200/32"]
 }
 
