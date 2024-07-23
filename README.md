@@ -1,2 +1,2 @@
-# gha-terrafrom-eks-infrastructure
-gha-terrafrom-eks-infrastructure
+# gha-terraform-eks-infrastructure
+gha-terraformm-eks-infrastructure
