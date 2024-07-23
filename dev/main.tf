@@ -90,6 +90,11 @@ module "eks-cluster" {
    cidrs     =  ["0.0.0.0/0", "0.0.0.0/0", "0.0.0.0/0", "10.0.0.200/32"]
 }
 
+module "arc" {
+  source       = "../modules/arc"
+  github_token = var.github_token
+  repository   = "iarslanch/techsol-ci-gha-workflow"
+}
 
 
 
