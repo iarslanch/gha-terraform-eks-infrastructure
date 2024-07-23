@@ -1,25 +1,4 @@
-Skip to content
-Navigation Menu
-iarslanch
-/
-gha-terraform-eks-infrastructure
 
-Type / to search
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-Terraform - Dev
-Terraform - Dev #1
-Jobs
-Run details
-Workflow file for this run
-.github/workflows/dev.yaml at fa46e6b
 name: 'Terraform - Dev'
 
 on:
@@ -98,4 +77,3 @@ jobs:
         tf_actions_working_dir: './dev'
         tf_actions_comment: true
         #args: '-auto-approve -var="env=dev"'
-test · iarslanch/gha-terraform-eks-infrastructure@fa46e6b
