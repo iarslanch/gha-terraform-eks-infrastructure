@@ -10,15 +10,11 @@ variable "env" {
 
 variable "project" {
   description = "Project Name Declare in Github Action Yaml"
-  default     = "my-project"  # or remove default and ensure it is set elsewhere
+  default     = "poc"  # or remove default and ensure it is set elsewhere
 }
 
 variable "github_token" {
   description = "GitHub Personal Access Token"
   type        = string
   sensitive   = true
-}
-
-locals {
-  cluster_name = "${var.project}-cluster-${var.env}"
 }
