@@ -1,3 +1,9 @@
+provider "kubernetes" {
+  host                   = var.cluster_endpoint
+  cluster_ca_certificate = var.cluster_ca_certificate
+  token                  = var.cluster_token
+}
+
 resource "helm_release" "actions_runner_controller" {
   name       = "actions-runner-controller"
   repository = "https://actions-runner-controller.github.io/actions-runner-controller"
@@ -19,12 +25,6 @@ resource "helm_release" "actions_runner_controller" {
     name  = "runnerDeployment.replicas"
     value = 1
   }
-}
-
-provider "kubernetes" {
-  host                   = data.aws_eks_cluster.this.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
-  token                  = data.aws_eks_cluster_auth.this.token
 }
 
 resource "kubernetes_manifest" "runner_deployment" {
