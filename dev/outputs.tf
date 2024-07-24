@@ -1,84 +1,31 @@
-# #### 01 TaskDefinition outputs ####
 
-# output "ecs_task_arn_1" {
-#   value = module.ecs_task_definition_1.task_definition_arn
-# }
+output "eks_cluster_endpoint" {
+  description = "EKS Cluster endpoint"
+  value       = module.eks_cluster.endpoint
+}
 
-# # # output "ecs_task_arn_2" {
-# # #   value = module.ecs_task_definition_2.task_definition_arn
-# # # }
+output "eks_cluster_certificate_authority_data" {
+  description = "EKS Cluster Certificate Authority Data"
+  value       = module.eks_cluster.certificate_authority_data
+}
 
+output "eks_cluster_arn" {
+  description = "EKS Cluster ARN"
+  value       = module.eks_cluster.cluster_arn
+}
 
+output "eks_cluster_security_group_id" {
+  description = "Security group ID attached to the EKS cluster"
+  value       = module.eks_cluster.cluster_security_group_id
+}
 
-
-# #### 02 LoadBalancer 443 Arn outputs ####
-
-
-# output "alb_listener_443_arn" {
-#   value = module.alb_listener_443.loadbalancer_listener_arn
-# }
-
-
-# #### 03 LoadBalancer TargerGroup Arn outputs ####
-
-# output "alb_target_groups_cloud_demo" {
-#   value = module.alb_target_groups_cloud_demo.target_group_arn
-# }
-
-# output "alb_target_groups_03" {
-#   value = module.alb_target_groups_03.target_group_arn
-# }
-
+output "eks_node_group_arns" {
+  description = "EKS Node Group ARNs"
+  value       = module.eks_cluster.node_group_arns
+}
+output "arc_runner_deployment_status" {
+  description = "Status of the ARC runner deployment"
+  value       = module.arc.runner_deployment_status
+}
 
 
-
-# ### LoadBalancer Listners Rules Arn outputs ####
-
-# output "listerners_rules_1" {
-#   value = module.listerners_rules_1.listener_rules_arn
-# }
-
-
-# output "listerners_rules_2" {
-#   value = module.listerners_rules_2.listener_rules_arn
-# }
-
-
-
-
-
-
-
-
-
-
-
-#### Secrets Name outputs ####
-
-
-# output "secrets_output" {
-#   value = module.secrets.example
-#   sensitive = true
-# }
-
-
-
-# output "secrets_output2" {
-#   value = module.secrets1.example
-#   sensitive = true
-# }
-
-
-
-#### RDS Security Groups ID outputs ####
-
-
-# output "mysql_sg_output" {
-#   description = "The db security group id"
-#   value       =  module.mysql.db_sg
-# }
-
-# output "mssql_sg_output" {
-#   description = "The db security group id"
-#   value       =  module.mssql.db_sg
-# }
