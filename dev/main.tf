@@ -92,7 +92,7 @@ resource "aws_instance" "bastion" {
   ami                    = "ami-0c55b159cbfafe1f0"  # Amazon Linux 2 AMI (example)
   instance_type          = "t2.micro"
   key_name               = "techsoland"
-  subnet_id              = module.network.public_subnet_id
+  subnet_id              = module.network.web_public_subnet01.id
   associate_public_ip_address = true
 
   tags = {
