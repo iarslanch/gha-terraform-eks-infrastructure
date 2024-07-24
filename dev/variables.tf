@@ -31,4 +31,31 @@ variable "eks_cluster_name" {
   default     = "techsol"
 }
 
-# Add other necessary variables as needed
+variable "endpoint_private_access" {
+  description = "Whether to enable private access to the EKS cluster endpoint"
+  type        = bool
+  default     = true
+}
+
+variable "endpoint_public_access" {
+  description = "Whether to enable public access to the EKS cluster endpoint"
+  type        = bool
+  default     = true
+}
+
+variable "public_access_cidrs" {
+  description = "CIDR blocks allowed to access the EKS cluster"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
+variable "web_public_subnet01" {
+  description = "ID of the first public subnet for the EKS cluster"
+  type        = string
+}
+
+variable "web_public_subnet02" {
+  description = "ID of the second public subnet for the EKS cluster"
+  type        = string
+}
+

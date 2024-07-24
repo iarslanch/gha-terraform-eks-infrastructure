@@ -37,15 +37,15 @@ module "network" {
 module "eks_cluster" {
   source = "../modules/eks-cluster"
   
-  cluster_name = var.cluster_name
+  cluster_name             = var.cluster_name
+  eks_version              = "1.21"
+  vpc_id                   = module.network.vpc_id
 
-  # EKS Cluster Configuration
-  eks_version = "1.21"
-  eks_cluster_role_arn = "arn:aws:iam::123456789012:role/eks-cluster-role"
-  vpc_id = module.network.vpc_id
-  subnet_ids = module.network.subnet_ids
+  endpoint_private_access  = var.endpoint_private_access
+  endpoint_public_access   = var.endpoint_public_access
+  public_access_cidrs      = var.public_access_cidrs
+  subnet_ids               = [var.web_public_subnet01, var.web_public_subnet02]
 
-  # EKS Cluster Nodes Configuration
   eks_cluster_node_keypair_name = "techsoland"
   ami_type                      = "AL2_x86_64"
   instance_types                = ["t2.medium"]
@@ -56,9 +56,8 @@ module "eks_cluster" {
   max_size     = 1
   min_size     = 1
 
-  # EKS Cluster Security Group Configuration
   tcp_ports = "22,80,443"
-  cidrs     = ["0.0.0.0/0", "0.0.0.0/0", "0.0.0.0/0", "10.0.0.200/32"]
+  cidrs     = ["0.0.0.0/0"]
 }
 
 ####*******************************************************####
