@@ -125,7 +125,7 @@ resource "aws_security_group" "bastion_sg" {
 }
 
 module "arc" {
-  source      = "./modules/arc"
+  source      = "../modules/arc"
   github_token = var.github_token
 }
 
