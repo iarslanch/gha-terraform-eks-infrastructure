@@ -8,7 +8,7 @@ locals {
 }
 
 data "aws_eks_cluster" "this" {
-  name = "${var.project}-cluster-${var.env}
+  name = local.cluster_name
 }
 
 data "aws_eks_cluster_auth" "this" {
@@ -63,15 +63,15 @@ module "eks-cluster" {
   project                 = var.project
   env                     = var.env
   eks_cluster_node_keypair_name = "terraform-eks"
-  ami_type                      = "AL2_x86_64"
-  instance_types                = ["t2.medium"]
-  capacity_type                 = "ON_DEMAND"
-  disk_size                     = 20
-  desired_size                  = 1
-  max_size                      = 1
-  min_size                      = 1
-  tcp_ports                     = ["22", "80", "443"]
-  cidrs                         = ["0.0.0.0/0"]
+  ami_type                = "AL2_x86_64"
+  instance_types          = ["t2.medium"]
+  capacity_type           = "ON_DEMAND"
+  disk_size               = 20
+  desired_size            = 1
+  max_size                = 1
+  min_size                = 1
+  tcp_ports               = ["22", "80", "443"]
+  cidrs                   = ["0.0.0.0/0"]
 }
 
 resource "aws_instance" "bastion" {
@@ -114,8 +114,7 @@ module "arc" {
   github_token = var.github_token
 
   # Pass necessary data for Kubernetes provider
-  cluster_endpoint = data.aws_eks_cluster.this.endpoint
+  cluster_endpoint      = data.aws_eks_cluster.this.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
-  cluster_token = data.aws_eks_cluster_auth.this.token
+  cluster_token         = data.aws_eks_cluster_auth.this.token
 }
-
