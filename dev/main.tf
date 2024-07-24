@@ -18,7 +18,6 @@ provider "kubectl" {
   load_config_file       = false
 }
 
-
 locals {
   cluster_name = "${var.project}-cluster-${var.env}"
 }
@@ -31,56 +30,42 @@ data "aws_eks_cluster_auth" "this" {
   name = data.aws_eks_cluster.this.name
 }
 
-# Rest of the configuration
-
-
 module "network" {
   source                          = "../modules/network"
-  
-  # VPC Configuration
   vpc_cidr                        = "72.11.0.0/20"
   enable_dns_support              = true
   enable_dns_hostnames            = true
 
-  # Public Subnet 1 Configuration
   web_public_subnet01_cidr                             = "72.11.1.0/24"
   web_public_subnet01_assign_ipv6_address_on_creation  = false
   web_public_subnet01_map_public_ip_on_launch          = true
   
-  # Public Subnet 2 Configuration
   web_public_subnet02_cidr                             = "72.11.2.0/24"
   web_public_subnet02_assign_ipv6_address_on_creation  = false
   web_public_subnet02_map_public_ip_on_launch          = true
 
-  # Private Subnet 1 Configuration
   app_private_subnet01_cidr                            = "72.11.4.0/22"
   app_private_subnet01_assign_ipv6_address_on_creation = false
   app_private_subnet01_map_public_ip_on_launch         = false
 
-  # Private Subnet 2 Configuration
   app_private_subnet02_cidr                            = "72.11.8.0/22"
   app_private_subnet02_assign_ipv6_address_on_creation = false
   app_private_subnet02_map_public_ip_on_launch         = false
 
-  # Private Database Subnet 1 Configuration
   db_private_subnet01_cidr                             = "72.11.12.0/24"
   db_private_subnet01_assign_ipv6_address_on_creation  = false
   db_private_subnet01_map_public_ip_on_launch          = false
 
-  # Private Database Subnet 2 Configuration
   db_private_subnet02_cidr                             = "72.11.14.0/24"
   db_private_subnet02_assign_ipv6_address_on_creation  = false
   db_private_subnet02_map_public_ip_on_launch          = false
 
-  # Subnets Availability Configuration
   availability_zone1                                   = "eu-west-2a"
   availability_zone2                                   = "eu-west-2b"
   project                                              = var.project
   env                                                  = var.env
 }
 
-
-# EKS cluster module
 module "eks-cluster" {
   source                  = "../modules/eks-cluster"
   vpc_id                  = module.network.vpc_id
@@ -104,9 +89,8 @@ module "eks-cluster" {
   cidrs                         = ["0.0.0.0/0"]
 }
 
-# Bastion host
 resource "aws_instance" "bastion" {
-  ami                    = "ami-0c55b159cbfafe1f0"  # Example Amazon Linux 2 AMI
+  ami                    = "ami-0c55b159cbfafe1f0"
   instance_type          = "t2.micro"
   key_name               = "techsoland"
   subnet_id              = module.network.web_public_subnet01
@@ -140,7 +124,6 @@ resource "aws_security_group" "bastion_sg" {
   }
 }
 
-# ARC module
 module "arc" {
   source       = "../modules/arc"
   github_token = var.github_token

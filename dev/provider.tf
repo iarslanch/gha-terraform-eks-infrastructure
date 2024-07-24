@@ -12,5 +12,5 @@ terraform {
       source  = "gavinbunney/kubectl"
       version = ">= 1.0"
     }
+  
   }
-}
