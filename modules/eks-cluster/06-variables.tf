@@ -43,14 +43,19 @@ variable "project" {}
 
 
 variable "tcp_ports" {
-  default = "default_null"
+  description = "List of TCP ports"
+  type        = list(string)
+  default     = ["22", "80", "443"]
 }
 
 variable "udp_ports" {
-  default = "default_null"
+  description = "List of UDP ports"
+  type        = list(string)
+  default     = []
 }
 
 variable "cidrs" {
-  type = list
-
+  description = "List of CIDR blocks"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
 }

@@ -15,3 +15,11 @@ resource "helm_release" "actions_runner_controller" {
     value = var.github_token
   }
 }
+set {
+    name  = "runnerDeployment.replicas"
+    value = 1
+  }
+}
+resource "kubernetes_manifest" "runner_deployment" {
+  manifest = yamldecode(file("${path.module}/runnerdeployment.yaml"))
+}
