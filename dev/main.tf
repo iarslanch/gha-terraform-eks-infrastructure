@@ -18,15 +18,15 @@ provider "kubectl" {
   load_config_file       = false
 }
 
-# Define local values
+
 locals {
   cluster_name = "${var.project}-cluster-${var.env}"
 }
 
-# Define data sources for the EKS cluster
 data "aws_eks_cluster" "this" {
   name = local.cluster_name
 }
+
 
 data "aws_eks_cluster_auth" "this" {
   name = data.aws_eks_cluster.this.name

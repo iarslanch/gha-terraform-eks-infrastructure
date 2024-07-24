@@ -4,9 +4,10 @@ resource "aws_security_group_rule" "tcp" {
   from_port         = tonumber(var.tcp_ports[count.index])
   to_port           = tonumber(var.tcp_ports[count.index])
   protocol          = "tcp"
-  cidr_blocks       = [var.cidrs[count.index]]
+  cidr_blocks       = [lookup(var.cidrs, count.index, "0.0.0.0/0")] # Default to "0.0.0.0/0" if not enough CIDRs
   security_group_id = aws_security_group.default.id
 }
+
 
 resource "aws_security_group_rule" "udp" {
   count             = length(var.udp_ports)
