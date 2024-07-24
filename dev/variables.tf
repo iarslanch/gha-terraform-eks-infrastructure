@@ -22,9 +22,5 @@ variable "github_token" {
 variable "cluster_name" {
   description = "The name of the EKS cluster"
   type        = string
-  # Specify the default directly if needed, or leave it for calculation elsewhere
-}
-
-locals {
-  cluster_name = "${var.project}-cluster-${var.env}"
+  default     = "poc-cluster-dev"  # Set a default or specify it in terraform.tfvars
 }
