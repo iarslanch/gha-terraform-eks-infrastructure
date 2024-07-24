@@ -2,9 +2,12 @@
 provider "aws" {
   region = var.region
 }
+data "aws_eks_cluster" "this" {
+  name = var.cluster_name
+}
 
-locals {
-  cluster_name = "${var.project}-cluster-${var.env}"
+data "aws_eks_cluster_auth" "this" {
+  name = data.aws_eks_cluster.this.name
 }
 
 module "network" {
