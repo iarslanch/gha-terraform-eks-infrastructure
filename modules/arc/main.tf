@@ -4,6 +4,15 @@ provider "kubernetes" {
   token                  = var.cluster_token
 }
 
+# Install Helm
+resource "null_resource" "install_helm" {
+  provisioner "local-exec" {
+    command = <<EOT
+      curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    EOT
+  }
+}
+
 # Add the Actions Runner Controller Helm repository
 resource "null_resource" "add_helm_repo" {
   provisioner "local-exec" {
@@ -12,6 +21,7 @@ resource "null_resource" "add_helm_repo" {
       helm repo update
     EOT
   }
+  depends_on = [null_resource.install_helm]
 }
 
 # Install the Actions Runner Controller using Helm
@@ -36,7 +46,7 @@ resource "helm_release" "actions_runner_controller" {
 
   set {
     name  = "runnerDeployment.replicas"
-    value = 2 # Set the desired number of runners here
+    value = 2
   }
 }
 
@@ -60,7 +70,7 @@ resource "kubernetes_manifest" "runner_deployment" {
       namespace = "actions-runner-system"
     }
     spec = {
-      replicas = 2 # Set the desired number of runners here
+      replicas = 2
       template = {
         spec = {
           repository = "iarslanch/techsol-ci-gha-workflow"
