@@ -7,7 +7,7 @@ provider "kubernetes" {
 # Install the Actions Runner Controller using Helm
 resource "helm_release" "arc" {
   name       = "actions-runner-controller"
-  namespace  = "arc-system"
+  namespace  = "actions-runner-system"
   chart      = "actions-runner-controller"
   repository = "https://actions-runner-controller.github.io/actions-runner-controller"
   version    = "0.19.1"
