@@ -4,15 +4,19 @@ provider "kubernetes" {
   token                  = var.cluster_token
 }
 
-# Install the Actions Runner Controller CRDs
-resource "null_resource" "install_actions_runner_controller_crd" {
+# Add the Helm repository for actions-runner-controller
+resource "null_resource" "add_actions_runner_repo" {
   provisioner "local-exec" {
-    command = "kubectl apply -f https://github.com/actions-runner-controller/actions-runner-controller/releases/latest/download/actions-runner-controller.yaml"
+    command = <<-EOT
+      helm repo add actions-runner-controller https://actions-runner-controller.github.io/actions-runner-controller
+      helm repo update
+    EOT
   }
 }
 
+# Install the Actions Runner Controller CRDs and Helm chart
 resource "helm_release" "actions_runner_controller" {
-  depends_on = [null_resource.install_actions_runner_controller_crd]
+  depends_on = [null_resource.add_actions_runner_repo]
 
   name             = "actions-runner-controller"
   repository       = "https://actions-runner-controller.github.io/actions-runner-controller"
