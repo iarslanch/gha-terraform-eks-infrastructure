@@ -2,10 +2,9 @@ apiVersion: actions.summerwind.dev/v1alpha1
 kind: RunnerDeployment
 metadata:
   name: poc-ciframework-runnerdeploy
+  namespace: arc-system
 spec:
   replicas: 1
   template:
     spec:
-      repository: iarslanch/techsol-ci-gha-workflow
-
-
+      organization: rld-devops
