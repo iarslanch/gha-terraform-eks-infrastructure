@@ -4,7 +4,16 @@ provider "kubernetes" {
   token                  = var.cluster_token
 }
 
+# Resource to install the Actions Runner Controller CRDs
+resource "null_resource" "install_actions_runner_controller_crd" {
+  provisioner "local-exec" {
+    command = "kubectl apply -f https://github.com/actions-runner-controller/actions-runner-controller/releases/latest/download/actions-runner-controller.yaml"
+  }
+}
+
 resource "helm_release" "actions_runner_controller" {
+  depends_on = [null_resource.install_actions_runner_controller_crd]
+
   name             = "actions-runner-controller"
   repository       = "https://actions-runner-controller.github.io/actions-runner-controller"
   chart            = "actions-runner-controller"
