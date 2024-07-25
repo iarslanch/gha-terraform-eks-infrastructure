@@ -15,6 +15,13 @@ terraform {
   }
 }
 
+provider "aws" {
+  region     = "eu-west-2" # 
+  # Optionally specify access_key and secret_key
+  # access_key = "your_access_key"
+  # secret_key = "your_secret_key"
+}
+
 provider "helm" {
   kubernetes {
     host                   = data.aws_eks_cluster.this.endpoint
