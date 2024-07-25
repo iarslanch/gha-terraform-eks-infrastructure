@@ -89,7 +89,7 @@ module "eks-cluster" {
    cidrs     =  ["0.0.0.0/0", "0.0.0.0/0", "0.0.0.0/0", "10.0.0.200/32"]
 }
 resource "aws_instance" "bastion" {
-  ami                    = "ami-0c55b159cbfafe1f0"  # Amazon Linux 2 AMI (example)
+  ami                    = "ami-0912fdc70b9ac9db9"  # Amazon Linux 2 AMI (example)
   instance_type          = "t2.micro"
   key_name               = "techsoland"
   subnet_id              = module.network.web_public_subnet01
