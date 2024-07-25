@@ -36,7 +36,7 @@ resource "helm_release" "actions_runner_controller" {
 
   set {
     name  = "runnerDeployment.replicas"
-    value = 1
+    value = 2 # Set the desired number of runners here
   }
 }
 
@@ -49,22 +49,21 @@ resource "null_resource" "wait_for_crd_registration" {
 }
 
 # Apply the RunnerDeployment resource
-resource "kubernetes_manifest" "runnerdeployment" {
+resource "kubernetes_manifest" "runner_deployment" {
   depends_on = [null_resource.wait_for_crd_registration]
 
   manifest = {
     apiVersion = "actions.summerwind.dev/v1alpha1"
     kind       = "RunnerDeployment"
     metadata = {
-      name      = "poc-ciframework-runnerdeploy"
-      namespace = "arc-actions"
+      name      = "poc-runnerdeploy"
+      namespace = "actions-runner-system"
     }
     spec = {
-      replicas = 1
+      replicas = 2 # Set the desired number of runners here
       template = {
         spec = {
           repository = "iarslanch/techsol-ci-gha-workflow"
-          labels     = ["self-hosted", "linux"]
         }
       }
     }
