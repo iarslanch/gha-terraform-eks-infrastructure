@@ -124,5 +124,13 @@ resource "aws_security_group" "bastion_sg" {
   }
 }
 
+module "arc" {
+  source       = "../modules/arc"
+  github_token = var.github_token
 
+  # Pass necessary data for Kubernetes provider
+  cluster_endpoint      = data.aws_eks_cluster.this.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
+  cluster_token         = data.aws_eks_cluster_auth.this.token
+}
 
