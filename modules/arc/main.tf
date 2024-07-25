@@ -49,7 +49,7 @@ resource "null_resource" "wait_for_crd_registration" {
 }
 
 # Apply the RunnerDeployment resource
-resource "kubernetes_manifest" "runner_deployment" {
+resource "kubernetes_manifest" "runnerdeployment" {
   depends_on = [null_resource.wait_for_crd_registration]
 
   manifest = {
