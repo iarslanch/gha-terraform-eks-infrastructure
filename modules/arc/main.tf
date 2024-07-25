@@ -5,10 +5,10 @@ provider "kubernetes" {
 }
 
 resource "helm_release" "actions_runner_controller" {
-  name       = "actions-runner-controller"
-  repository = "https://actions-runner-controller.github.io/actions-runner-controller"
-  chart      = "actions-runner-controller"
-  namespace  = "actions-runner-system"
+  name             = "actions-runner-controller"
+  repository       = "https://actions-runner-controller.github.io/actions-runner-controller"
+  chart            = "actions-runner-controller"
+  namespace        = "actions-runner-system"
   create_namespace = true
 
   set {
@@ -28,6 +28,8 @@ resource "helm_release" "actions_runner_controller" {
 }
 
 resource "kubernetes_manifest" "runner_deployment" {
+  depends_on = [helm_release.actions_runner_controller]
+
   manifest = {
     apiVersion = "actions.summerwind.dev/v1alpha1"
     kind       = "RunnerDeployment"
@@ -39,11 +41,10 @@ resource "kubernetes_manifest" "runner_deployment" {
       replicas = 1
       template = {
         spec = {
-          repository = "repository: iarslanch/techsol-ci-gha-workflow"
+          repository = "iarslanch/techsol-ci-gha-workflow"
           labels     = ["self-hosted", "linux"]
         }
       }
     }
   }
 }
-
