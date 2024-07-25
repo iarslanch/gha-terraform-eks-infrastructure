@@ -4,34 +4,14 @@ provider "kubernetes" {
   token                  = var.cluster_token
 }
 
-# Install Helm
-resource "null_resource" "install_helm" {
-  provisioner "local-exec" {
-    command = <<EOT
-      curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-    EOT
-  }
-}
-
-# Add the Actions Runner Controller Helm repository
-resource "null_resource" "add_helm_repo" {
-  provisioner "local-exec" {
-    command = <<EOT
-      helm repo add actions-runner-controller https://actions-runner-controller.github.io/actions-runner-controller && \
-      helm repo update
-    EOT
-  }
-  depends_on = [null_resource.install_helm]
-}
-
 # Install the Actions Runner Controller using Helm
-resource "helm_release" "actions_runner_controller" {
-  depends_on = [null_resource.add_helm_repo]
-
+resource "helm_release" "arc" {
   name       = "actions-runner-controller"
-  repository = "https://actions-runner-controller.github.io/actions-runner-controller"
+  namespace  = "arc-system"
   chart      = "actions-runner-controller"
-  namespace  = "actions-runner-system"
+  repository = "https://actions-runner-controller.github.io/actions-runner-controller"
+  version    = "0.19.1"
+
   create_namespace = true
 
   set {
@@ -46,38 +26,15 @@ resource "helm_release" "actions_runner_controller" {
 
   set {
     name  = "runnerDeployment.replicas"
-    value = 2
+    value = 1
   }
-}
-
-# Wait for the Actions Runner Controller CRDs to register
-resource "null_resource" "wait_for_crd_registration" {
-  provisioner "local-exec" {
-    command = "sleep 30"
-  }
-  depends_on = [helm_release.actions_runner_controller]
 }
 
 # Apply the RunnerDeployment resource
 resource "kubernetes_manifest" "runner_deployment" {
-  depends_on = [null_resource.wait_for_crd_registration]
+  depends_on = [helm_release.arc]
 
-  manifest = {
-    apiVersion = "actions.summerwind.dev/v1alpha1"
-    kind       = "RunnerDeployment"
-    metadata = {
-      name      = "poc-runnerdeploy"
-      namespace = "actions-runner-system"
-    }
-    spec = {
-      replicas = 2
-      template = {
-        spec = {
-          repository = "iarslanch/techsol-ci-gha-workflow"
-        }
-      }
-    }
-  }
+  manifest = yamldecode(file("${path.module}/runnerdeployment.yaml"))
 }
 
 # Variables for Kubernetes provider
