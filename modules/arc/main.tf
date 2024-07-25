@@ -28,5 +28,22 @@ resource "helm_release" "actions_runner_controller" {
 }
 
 resource "kubernetes_manifest" "runner_deployment" {
-  manifest = yamldecode(file("${path.module}/runnerdeployment.yaml"))
+  manifest = {
+    apiVersion = "actions.summerwind.dev/v1alpha1"
+    kind       = "RunnerDeployment"
+    metadata = {
+      name      = "poc-ciframework-runnerdeploy"
+      namespace = "arc-actions"
+    }
+    spec = {
+      replicas = 1
+      template = {
+        spec = {
+          repository = "repository: iarslanch/techsol-ci-gha-workflow"
+          labels     = ["self-hosted", "linux"]
+        }
+      }
+    }
+  }
 }
+
